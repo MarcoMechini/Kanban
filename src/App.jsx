@@ -1,15 +1,23 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faEllipsis } from '@fortawesome/free-solid-svg-icons'
 
 const AppModal = ({ isOpen, value, setModal, onConfirm }) => {
   if (!isOpen) return null
-  console.log(value);
+  const inputRef = useRef(null)
+
+  useEffect(() => {
+    inputRef.current.focus()
+  }, [])
+
+  const handleKeyUp = e => {
+    if (e.key === 'Enter') {
+      onConfirm()
+    }
+  }
 
   const handleChange = (e) => {
     setModal(prev => ({ isOpen: prev.isOpen, value: { id: value.id, name: e.target.value, tasks: value.tasks } }))
-    console.log('value', value);
-
   }
 
   return (
@@ -18,7 +26,9 @@ const AppModal = ({ isOpen, value, setModal, onConfirm }) => {
         <label htmlFor="name">Nome</label>
         <input type="text"
           value={value.name}
-          onChange={handleChange} />
+          onChange={handleChange}
+          onKeyUp={handleKeyUp}
+          ref={inputRef} />
         <button onClick={() => setModal(prev => ({ isOpen: !prev.isOpen, value: prev.value }))}>
           Chiudi</button>
         <button onClick={onConfirm}>Conferma</button>
@@ -41,7 +51,6 @@ function App() {
   }
 
   const addTask = (_, col) => {
-    console.log(col);
     setColumn(prev => prev.map(c => {
       if (c.id === col.id) {
         return { ...c, tasks: [...c.tasks, { title: 'Task', desc: 'Descrizione' }] }

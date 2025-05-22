@@ -25,22 +25,87 @@
 
 .modal-overlay {
   position: fixed;
+  /* Rende l'overlay fisso rispetto alla viewport */
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  /* Sfondo semi-trasparente */
   display: flex;
-  align-items: center;
+  /* Utilizza flexbox per centrare il contenuto */
   justify-content: center;
+  /* Centra orizzontalmente */
+  align-items: center;
+  /* Centra verticalmente */
   z-index: 1000;
+  /* Assicura che il modale sia sopra gli altri elementi */
 }
 
 .modal-content {
-  background: #fff;
-  padding: 2rem 2.5rem;
+  background-color: #fff;
+  /* Sfondo bianco per il contenuto del modale */
+  padding: 30px;
   border-radius: 8px;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2);
-  min-width: 320px;
-  min-height: 120px;
+  /* Bordi leggermente arrotondati */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  /* Ombra per profondità */
+  width: 90%;
+  /* Larghezza responsiva */
+  max-width: 500px;
+  /* Larghezza massima per non farlo diventare troppo grande */
+  display: flex;
+  flex-direction: column;
+  /* Organizza gli elementi in colonna */
+  gap: 15px;
+  /* Spazio tra gli elementi */
+}
+
+.modal-content label {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.modal-content input[type="text"] {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 100%;
+  /* L'input occupa tutta la larghezza disponibile */
+  box-sizing: border-box;
+  /* Include padding e border nella larghezza */
+}
+
+.modal-content button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  /* Transizione per hover */
+}
+
+.modal-content button:first-of-type {
+  /* Stile per il bottone "Chiudi" */
+  background-color: #f44336;
+  /* Rosso */
+  color: white;
+}
+
+.modal-content button:first-of-type:hover {
+  background-color: #d32f2f;
+}
+
+.modal-content button:last-of-type {
+  /* Stile per il bottone "Conferma" */
+  background-color: #4CAF50;
+  /* Verde */
+  color: white;
+}
+
+.modal-content button:last-of-type:hover {
+  background-color: #388e3c;
 }
