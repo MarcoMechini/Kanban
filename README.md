@@ -1,5 +1,27 @@
-## Kanban
+# Kanban Board React
 
-Questo progetto vuole essere una riproduzione di un Kanban (es trello) per la gestione dei task
+Una semplice Kanban Board realizzata in React, con drag & drop avanzato tramite la libreria [@hello-pangea/dnd](https://github.com/hello-pangea/dnd).
 
-![alt text](image-1.png)
+## Funzionalità
+- Aggiungi colonne e task dinamicamente
+- Modifica il nome delle colonne tramite modale
+- Trascina colonne e task per riordinarli o spostarli tra colonne
+
+## Tecnologie usate
+- React
+- @hello-pangea/dnd (per il drag & drop)
+- Vite (per lo sviluppo e build)
+
+## Struttura principale
+- `src/App.jsx`: logica e UI della board Kanban
+- `src/index.css`: stili principali
+- `public/`: risorse statiche
+
+## Note drag & drop
+- Il drag & drop è gestito tramite `<DragDropContext>`, `<Droppable>` e `<Draggable>`
+- Puoi trascinare sia le colonne (orizzontalmente) che i task (verticalmente e tra colonne)
+
+<!-- ## Screenshot -->
+<!-- ![Kanban Screenshot](image.png) -->
+
+---
