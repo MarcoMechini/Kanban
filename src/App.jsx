@@ -1,63 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-
-const AppModal = ({ isOpen, value, setModal, onConfirm }) => {
-  const inputRef = useRef(null);
-
-  useEffect(() => {
-    if (isOpen && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [isOpen]);
-
-  const handleKeyUp = (e) => {
-    if (e.key === 'Enter') {
-      onConfirm();
-    }
-  };
-
-  const handleChange = (e) => {
-    setModal(prev => ({ isOpen: prev.isOpen, value: { ...prev.value, name: e.target.value } }));
-  };
-
-  return (
-    <div className={`modal-overlay ${isOpen ? 'modal-overlay-visible' : 'modal-overlay-hidden'}`}>
-      <div className="modal-content">
-        <label htmlFor="name">Nome Colonna</label>
-        <input
-          type="text"
-          id="name"
-          value={value.name || ''} // Ensure value is not undefined
-          onChange={handleChange}
-          onKeyUp={handleKeyUp}
-          ref={inputRef}
-        />
-        <div className="modal-buttons">
-          <button
-            onClick={() => setModal(prev => ({ isOpen: false, value: prev.value }))}
-            className="modal-button modal-button-close"
-          >
-            Chiudi
-          </button>
-          <button
-            onClick={onConfirm}
-            className="modal-button modal-button-confirm"
-          >
-            Conferma
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
+import AppModal from './components/AppModal';
 
 function App() {
 
   const [column, setColumn] = useState([]);
   const [modal, setModal] = useState({ isOpen: false, value: {} });
-
-  // Refs to store data about the currently dragged item
-  const draggedItem = useRef(null); // Stores { type: 'column' | 'task', id: string, sourceColumnId?: string }
 
   // Helper function to reorder an array immutably
   const reorder = (list, startIndex, endIndex) => {
@@ -71,7 +19,7 @@ function App() {
     const newColumn = {
       id: Date.now().toString(), // Unique ID for column
       name: 'Nuova Colonna',
-      tasks: [{ id: Date.now().toString() + '-task', title: 'Nuovo Task', desc: 'Descrizione del Task' }] // Unique ID for task
+      tasks: [{ id: Date.now().toString() + 1, colId: Date.now().toString(), title: 'Nuovo Task', desc: 'Descrizione del Task' }] // Unique ID for task
     };
     setColumn(prev => [...prev, newColumn]);
   };
@@ -79,27 +27,64 @@ function App() {
   const addTask = (_, col) => {
     setColumn(prev => prev.map(c => {
       if (c.id === col.id) {
-        return { ...c, tasks: [...c.tasks, { id: Date.now().toString() + '-task', title: 'Nuovo Task', desc: 'Descrizione del Task' }] };
+        return { ...c, tasks: [...c.tasks, { colId: c.id, id: Date.now().toString(), title: 'Nuovo Task', desc: 'Descrizione del Task' }] };
       }
       return c;
     }));
   };
 
   const handleConfirm = () => {
-    setColumn(prev => prev.map(col => {
-      if (col.id === modal.value.id) {
-        return { ...col, name: modal.value.name };
-      }
-      return col;
-    }));
+    if (!modal.value.desc) {
+      setColumn(prev => prev.map(col => {
+        if (col.id === modal.value.id) {
+          return { ...col, name: modal.value.name };
+        }
+        return col;
+      }));
+    }
+    if (modal.value.desc) {
+      setColumn(prev => prev.map(col => {
+        if (col.id === modal.value.colId) {
+          return {
+            ...col, tasks: col.tasks.map(task => {
+              if (task.id === modal.value.id) {
+
+                return { ...task, title: modal.value.name, desc: modal.value.desc }
+              }
+              return task;
+            })
+          }
+
+        }
+        return col;
+      }));
+    }
+
     setModal(prev => ({ isOpen: false, value: prev.value }));
   };
 
-  const handleModal = (col) => {
-    setModal(prev => ({
-      isOpen: true,
-      value: col
-    }));
+  const handleModal = (curValue, isCol = false) => {
+
+    if (isCol) {
+      setModal({
+        isOpen: true,
+        value: curValue
+      });
+      return;
+    }
+    if (!isCol) {
+      setModal({
+        isOpen: true,
+        value: {
+          id: curValue.id,
+          name: curValue.title,
+          colId: curValue.colId,
+          desc: curValue.desc
+        }
+      })
+      return;
+    }
+
   };
 
   // Funzione per gestire il drag & drop con la libreria
@@ -172,7 +157,7 @@ function App() {
                     >
                       <div className="col-header" {...provided.dragHandleProps}>
                         <h3>{col.name}</h3>
-                        <button className="edit-name-button" onClick={() => handleModal(col)}>
+                        <button className="edit-name-button" onClick={() => handleModal(col, true)}>
                           {/* SVG per ellipsis */}
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="icon">
                             <path fillRule="evenodd" d="M4.5 12a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" clipRule="evenodd" />
@@ -200,6 +185,12 @@ function App() {
                                   >
                                     <h4>{task.title}</h4>
                                     <p>{task.desc}</p>
+                                    <button className="edit-name-button" onClick={() => handleModal(task)}>
+                                      {/* SVG per ellipsis */}
+                                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="icon">
+                                        <path fillRule="evenodd" d="M4.5 12a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" clipRule="evenodd" />
+                                      </svg>
+                                    </button>
                                   </div>
                                 )}
                               </Draggable>
