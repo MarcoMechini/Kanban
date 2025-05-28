@@ -4,7 +4,7 @@ export default function AppModal({ isOpen, value, setModal, onConfirm }) {
     const inputRef = useRef(null);
 
     useEffect(() => {
-        // console.log('modal value', value);
+        console.log('modal value', value);
         if (isOpen && inputRef.current) {
             inputRef.current.focus();
         }
@@ -17,8 +17,56 @@ export default function AppModal({ isOpen, value, setModal, onConfirm }) {
     };
 
     const handleChange = (e) => {
-        setModal(prev => ({ isOpen: prev.isOpen, value: { ...prev.value, name: e.target.value } }));
+        const { name, value } = e.target
+        if (name === 'desc') {
+            setModal(prev => ({ isOpen: prev.isOpen, value: { ...prev.value, desc: e.target.value } }));
+        }
+        if (name === 'title') {
+            setModal(prev => ({ isOpen: prev.isOpen, value: { ...prev.value, name: e.target.value } }));
+        }
     };
+
+    if (value.colId && value.desc !== '') {
+        return (
+            <div className={`modal-overlay ${isOpen ? 'modal-overlay-visible' : 'modal-overlay-hidden'}`}>
+                <div className="modal-content">
+                    <label htmlFor="title">Titolo task</label>
+                    <input
+                        type="text"
+                        id="title"
+                        name='title'
+                        value={value.name || ''} // Ensure value is not undefined
+                        onChange={handleChange}
+                        onKeyUp={handleKeyUp}
+                        ref={inputRef}
+                    />
+                    <label htmlFor="desc">Descrizione</label>
+                    <input
+                        type="text"
+                        id="desc"
+                        name="desc"
+                        value={value.desc || ''} // Ensure value is not undefined
+                        onChange={handleChange}
+                        onKeyUp={handleKeyUp}
+                    />
+                    <div className="modal-buttons">
+                        <button
+                            onClick={() => setModal(prev => ({ isOpen: false, value: prev.value }))}
+                            className="modal-button modal-button-close"
+                        >
+                            Chiudi
+                        </button>
+                        <button
+                            onClick={onConfirm}
+                            className="modal-button modal-button-confirm"
+                        >
+                            Conferma
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={`modal-overlay ${isOpen ? 'modal-overlay-visible' : 'modal-overlay-hidden'}`}>
