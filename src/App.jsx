@@ -146,7 +146,9 @@ function App() {
       <DragDropContext onDragEnd={onDragEnd}> {/* Inizio del contesto Drag & Drop globale */}
         <Droppable droppableId="board" direction="horizontal" type="COLUMN">
           {(provided, snapshot) => (
-            <section className="kanban" ref={provided.innerRef} {...provided.droppableProps}>
+            <section className="kanban" ref={provided.innerRef} {...provided.droppableProps}
+            // style={{ backgroundColor: snapshot.isDragging ? 'red' : 'transparent' }}
+            >
               {column.map((col, colIdx) => (
                 <Draggable key={col.id} draggableId={col.id} index={colIdx}>
                   {(provided, snapshot) => (
