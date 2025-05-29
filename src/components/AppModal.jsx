@@ -3,9 +3,7 @@ import { useEffect, useRef } from "react";
 export default function AppModal({ isOpen, value, setModal, onConfirm }) {
     const inputRef = useRef(null);
 
-
     useEffect(() => {
-        console.log('modal value', value);
         if (isOpen && inputRef.current) {
             inputRef.current.focus();
         }
@@ -19,6 +17,9 @@ export default function AppModal({ isOpen, value, setModal, onConfirm }) {
 
     const handleChange = (e) => {
         const { name, value } = e.target
+        if (name === 'colName') {
+            setModal(prev => ({ isOpen: prev.isOpen, value: { ...prev.value, name: value } }));
+        }
         if (name === 'desc') {
             setModal(prev => ({ isOpen: prev.isOpen, value: { ...prev.value, desc: value } }));
         }
@@ -76,6 +77,7 @@ export default function AppModal({ isOpen, value, setModal, onConfirm }) {
                 <input
                     type="text"
                     id="name"
+                    name="colName"
                     value={value.name || ''} // Ensure value is not undefined
                     onChange={handleChange}
                     onKeyUp={handleKeyUp}
