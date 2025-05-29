@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 export default function AppModal({ isOpen, value, setModal, onConfirm }) {
     const inputRef = useRef(null);
 
+
     useEffect(() => {
         console.log('modal value', value);
         if (isOpen && inputRef.current) {
@@ -19,14 +20,14 @@ export default function AppModal({ isOpen, value, setModal, onConfirm }) {
     const handleChange = (e) => {
         const { name, value } = e.target
         if (name === 'desc') {
-            setModal(prev => ({ isOpen: prev.isOpen, value: { ...prev.value, desc: e.target.value } }));
+            setModal(prev => ({ isOpen: prev.isOpen, value: { ...prev.value, desc: value } }));
         }
         if (name === 'title') {
-            setModal(prev => ({ isOpen: prev.isOpen, value: { ...prev.value, name: e.target.value } }));
+            setModal(prev => ({ isOpen: prev.isOpen, value: { ...prev.value, name: value } }));
         }
     };
 
-    if (value.colId && value.desc !== '') {
+    if (value.colId && !value.tasks) {
         return (
             <div className={`modal-overlay ${isOpen ? 'modal-overlay-visible' : 'modal-overlay-hidden'}`}>
                 <div className="modal-content">
