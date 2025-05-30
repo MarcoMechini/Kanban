@@ -16,9 +16,12 @@ body {
 .app-container {
   min-height: 100vh;
   background: linear-gradient(to bottom right, #e0f2fe, #ede9fe);
-  padding: 2rem;
   color: #333;
   font-family: 'Inter', sans-serif;
+}
+
+.hero {
+  padding: 2rem;
 }
 
 h1 {
@@ -77,8 +80,9 @@ nav {
 
 .kanban {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  justify-content: flex-start;
   gap: 1.5rem;
 }
 
@@ -87,7 +91,8 @@ nav {
   border-radius: 0.75rem;
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
-  width: 100%;
+  flex-shrink: 0;
+  min-width: 18rem;
   max-width: 20rem;
   display: flex;
   flex-direction: column;
@@ -96,7 +101,12 @@ nav {
 
 @media (min-width: 640px) {
 
+  .kanban {
+    padding: 0 2rem;
+  }
+
   .column-card {
+    min-width: 18rem;
     max-width: 20rem;
   }
 }
@@ -104,6 +114,7 @@ nav {
 @media (min-width: 1024px) {
 
   .column-card {
+    min-width: 18rem;
     max-width: 24rem;
   }
 }

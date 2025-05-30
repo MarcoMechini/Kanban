@@ -132,17 +132,19 @@ function App() {
 
   return (
     <div className="app-container">
-      <h1 className="main-title">Kanban Board</h1>
-      <h2 className="subtitle">Organizza i tuoi Task</h2>
-      <nav>
-        <button onClick={addColumn} className="add-column-button">
-          {/* SVG per icona */}
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="icon">
-            <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-14.561 14.56a2.625 2.625 0 0 0 0 3.712l3.713 3.713a2.625 2.625 0 0 0 3.712 0l14.56-14.561a2.625 2.625 0 0 0 0-3.712l-3.713-3.713Zm-10.318 7.375l-2.121 2.121a1.5 1.5 0 0 1-2.121 0l-.375-.375a1.5 1.5 0 0 1 0-2.121l2.121-2.121a1.5 1.5 0 0 1 2.121 0l.375.375a1.5 1.5 0 0 1 0 2.121Z" />
-          </svg>
-          Aggiungi Colonna
-        </button>
-      </nav>
+      <section className='hero'>
+        <h1 className="main-title">Kanban Board</h1>
+        <h2 className="subtitle">Organizza i tuoi Task</h2>
+        <nav>
+          <button onClick={addColumn} className="add-column-button">
+            {/* SVG per icona */}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="icon">
+              <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-14.561 14.56a2.625 2.625 0 0 0 0 3.712l3.713 3.713a2.625 2.625 0 0 0 3.712 0l14.56-14.561a2.625 2.625 0 0 0 0-3.712l-3.713-3.713Zm-10.318 7.375l-2.121 2.121a1.5 1.5 0 0 1-2.121 0l-.375-.375a1.5 1.5 0 0 1 0-2.121l2.121-2.121a1.5 1.5 0 0 1 2.121 0l.375.375a1.5 1.5 0 0 1 0 2.121Z" />
+            </svg>
+            Aggiungi Colonna
+          </button>
+        </nav>
+      </section>
       <DragDropContext onDragEnd={onDragEnd}> {/* Inizio del contesto Drag & Drop globale */}
         <Droppable droppableId="board" direction="horizontal" type="COLUMN">
           {(provided, snapshot) => (
