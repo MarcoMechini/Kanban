@@ -5,6 +5,7 @@ import AppModal from './components/AppModal';
 function App() {
 
   const [column, setColumn] = useState([]);
+  const [options, setOptions] = useState(false);
   const [modal, setModal] = useState({ isOpen: false, value: {} });
 
   // Helper function to reorder an array immutably
@@ -86,6 +87,26 @@ function App() {
     }
 
   };
+
+  const handleDeleteColumn = column => {
+    setColumn(prev => prev.filter(col => col.id !== column.colId))
+  }
+
+  const handleDeleteTask = taskToDelete => {
+    setColumn(prev => prev.map(col => {
+      if (col.id === taskToDelete.colId) {
+        return {
+          ...col, tasks: col.tasks.filter(task => {
+            if (task.id !== taskToDelete.id) {
+              return task;
+            }
+            return;
+          })
+        }
+      }
+      return col;
+    }));
+  }
 
   // Funzione per gestire il drag & drop con la libreria
   const onDragEnd = (result) => {
@@ -189,12 +210,18 @@ function App() {
                                   >
                                     <h4>{task.title}</h4>
                                     <p>{task.desc}</p>
-                                    <button className="edit-name-button" onClick={() => handleModal(task)}>
+                                    <button className="edit-name-button" onClick={() => setOptions(prev => !prev)}>
                                       {/* SVG per ellipsis */}
                                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="icon">
                                         <path fillRule="evenodd" d="M4.5 12a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" clipRule="evenodd" />
                                       </svg>
                                     </button>
+                                    {options &&
+                                      <div className='options'>
+                                        <button onClick={() => handleModal(task)}>Modifica</button>
+                                        <button onClick={() => handleDeleteTask(task)}>Elimina</button>
+                                      </div>
+                                    }
                                   </div>
                                 )}
                               </Draggable>
