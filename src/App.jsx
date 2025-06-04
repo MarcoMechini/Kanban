@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import AppModal from './components/AppModal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+
 
 function App() {
 
   const [column, setColumn] = useState([]);
-  const [options, setOptions] = useState(false);
+  const [options, setOptions] = useState({ id: 0, flag: false });
   const [modal, setModal] = useState({ isOpen: false, value: {} });
 
   // Helper function to reorder an array immutably
@@ -159,9 +162,8 @@ function App() {
         <nav>
           <button onClick={addColumn} className="add-column-button">
             {/* SVG per icona */}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="icon">
-              <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-14.561 14.56a2.625 2.625 0 0 0 0 3.712l3.713 3.713a2.625 2.625 0 0 0 3.712 0l14.56-14.561a2.625 2.625 0 0 0 0-3.712l-3.713-3.713Zm-10.318 7.375l-2.121 2.121a1.5 1.5 0 0 1-2.121 0l-.375-.375a1.5 1.5 0 0 1 0-2.121l2.121-2.121a1.5 1.5 0 0 1 2.121 0l.375.375a1.5 1.5 0 0 1 0 2.121Z" />
-            </svg>
+            <FontAwesomeIcon icon={faPen} />
+            {/* <FontAwesomeIcon icon={faHome} /> */}
             Aggiungi Colonna
           </button>
         </nav>
@@ -208,20 +210,39 @@ function App() {
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
                                   >
-                                    <h4>{task.title}</h4>
-                                    <p>{task.desc}</p>
-                                    <button className="edit-name-button" onClick={() => setOptions(prev => !prev)}>
-                                      {/* SVG per ellipsis */}
-                                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="icon">
-                                        <path fillRule="evenodd" d="M4.5 12a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" clipRule="evenodd" />
-                                      </svg>
-                                    </button>
-                                    {options &&
-                                      <div className='options'>
-                                        <button onClick={() => handleModal(task)}>Modifica</button>
-                                        <button onClick={() => handleDeleteTask(task)}>Elimina</button>
-                                      </div>
-                                    }
+                                    <div className='task-value'>
+                                      <h4>{task.title}</h4>
+                                      <p>{task.desc}</p>
+                                    </div>
+                                    <div className='task-settings'>
+                                      <button
+                                        style={{ 'display': (options.id === task.id && options.flag === true) ? 'none' : '' }}
+                                        className="edit-name-button"
+                                        onClick={() => {
+                                          if (options.id !== task.id) {
+                                            setOptions({ id: task.id, flag: options.flag })
+                                          }
+                                          else if (options.id === task.id) {
+                                            setOptions({ id: task.id, flag: !options.flag })
+                                          }
+                                        }}
+                                      >
+                                        {/* SVG per ellipsis */}
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="icon">
+                                          <path fillRule="evenodd" d="M4.5 12a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" clipRule="evenodd" />
+                                        </svg>
+                                      </button>
+                                      {(options.id === task.id && options.flag) &&
+                                        <div className='options'>
+                                          <button className='icon-btn' onClick={() => handleModal(task)}>
+                                            <FontAwesomeIcon icon={faPen} />
+                                          </button>
+                                          <button className='icon-btn' onClick={() => handleDeleteTask(task)}>
+                                            <FontAwesomeIcon icon={faTrash} />
+                                          </button>
+                                        </div>
+                                      }
+                                    </div>
                                   </div>
                                 )}
                               </Draggable>
