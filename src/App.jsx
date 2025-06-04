@@ -8,7 +8,7 @@ import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 function App() {
 
   const [column, setColumn] = useState([]);
-  const [options, setOptions] = useState({ id: 0, flag: false });
+  const [options, setOptions] = useState({ id: 0, flag: true });
   const [modal, setModal] = useState({ isOpen: false, value: {} });
 
   // Helper function to reorder an array immutably
@@ -91,8 +91,8 @@ function App() {
 
   };
 
-  const handleDeleteColumn = column => {
-    setColumn(prev => prev.filter(col => col.id !== column.colId))
+  const handleDeleteColumn = columnToDelete => {
+    setColumn(prev => prev.filter(col => col.id !== columnToDelete.id))
   }
 
   const handleDeleteTask = taskToDelete => {
@@ -184,12 +184,32 @@ function App() {
                     >
                       <div className="col-header" {...provided.dragHandleProps}>
                         <h3>{col.name}</h3>
-                        <button className="edit-name-button" onClick={() => handleModal(col, true)}>
-                          {/* SVG per ellipsis */}
+                        <button
+                          style={{ 'display': (options.id === col.id && options.flag === true) ? 'none' : '' }}
+                          className="edit-name-button"
+                          onClick={() => {
+                            if (options.id !== col.id) {
+                              setOptions({ id: col.id, flag: options.flag })
+                            }
+                            else if (options.id === col.id) {
+                              setOptions({ id: col.id, flag: !options.flag })
+                            }
+                          }}
+                        >
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="icon">
                             <path fillRule="evenodd" d="M4.5 12a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" clipRule="evenodd" />
                           </svg>
                         </button>
+                        {(options.id === col.id && options.flag) &&
+                          <div className='options'>
+                            <button className='icon-btn' onClick={() => handleModal(col, true)}>
+                              <FontAwesomeIcon icon={faPen} />
+                            </button>
+                            <button className='icon-btn' onClick={() => handleDeleteColumn(col)}>
+                              <FontAwesomeIcon icon={faTrash} />
+                            </button>
+                          </div>
+                        }
                       </div>
                       <Droppable droppableId={col.id} type="TASK">
                         {(provided, snapshot) => (
@@ -266,7 +286,7 @@ function App() {
         onConfirm={handleConfirm}
         setModal={setModal}
       />
-    </div>
+    </div >
   );
 }
 

@@ -90,7 +90,6 @@ nav {
   background-color: white;
   border-radius: 0.75rem;
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
   flex-shrink: 0;
   min-width: 18rem;
   max-width: 20rem;
@@ -120,9 +119,11 @@ nav {
 }
 
 .col-header {
+  padding: 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-height: 88px;
   margin-bottom: 1rem;
 }
 
@@ -153,6 +154,7 @@ nav {
 }
 
 .col-body {
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
