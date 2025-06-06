@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import AppModal from './components/AppModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,6 +10,8 @@ function App() {
   const [column, setColumn] = useState([]);
   const [options, setOptions] = useState({ id: 0, flag: true });
   const [modal, setModal] = useState({ isOpen: false, value: {} });
+
+  const lastColumnRef = useRef(null)
 
   // Helper function to reorder an array immutably
   const reorder = (list, startIndex, endIndex) => {
@@ -27,6 +29,10 @@ function App() {
     };
     setColumn(prev => [...prev, newColumn]);
   };
+
+  useEffect(() => {
+    if (lastColumnRef.current) lastColumnRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [column]);
 
   const addTask = (_, col) => {
     setColumn(prev => prev.map(c => {
@@ -68,7 +74,6 @@ function App() {
   };
 
   const handleModal = (curValue, isCol = false) => {
-
     if (isCol) {
       setModal({
         isOpen: true,
@@ -182,7 +187,10 @@ function App() {
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                     >
-                      <div className="col-header" {...provided.dragHandleProps}>
+                      <div className="col-header"
+                        tabIndex={0}
+                        ref={(column[column.length - 1] === col) ? lastColumnRef : null}
+                        {...provided.dragHandleProps}>
                         <h3>{col.name}</h3>
                         <button
                           style={{ 'display': (options.id === col.id && options.flag === true) ? 'none' : '' }}

@@ -83,6 +83,7 @@ nav {
   flex-wrap: nowrap;
   overflow-x: auto;
   justify-content: flex-start;
+  padding: 0 1rem;
   gap: 1.5rem;
 }
 
@@ -98,28 +99,8 @@ nav {
   border-top: 4px solid #3b82f6;
 }
 
-@media (min-width: 640px) {
-
-  .kanban {
-    padding: 0 2rem;
-  }
-
-  .column-card {
-    min-width: 18rem;
-    max-width: 20rem;
-  }
-}
-
-@media (min-width: 1024px) {
-
-  .column-card {
-    min-width: 18rem;
-    max-width: 24rem;
-  }
-}
-
 .col-header {
- padding: 1.5rem 1.5rem 0;
+  padding: 1.5rem 1.5rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -224,13 +205,14 @@ nav {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   z-index: 50;
   transition: opacity 0.3s ease;
+  padding: 20px;
 }
 
 .modal-overlay-visible {
@@ -253,6 +235,7 @@ nav {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  max-height: calc(100vh - 40px);
 }
 
 .modal-content label {
@@ -287,7 +270,7 @@ nav {
   border-radius: 0.375rem;
   border: none;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 20.9s ease;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
@@ -305,4 +288,28 @@ nav {
 
 .modal-button-confirm:hover {
   background-color: #16a34a;
+}
+
+@media (min-width: 640px) {
+
+  .kanban {
+    padding: 1.5rem;
+  }
+
+  .column-card {
+    min-width: 18rem;
+    max-width: 20rem;
+  }
+}
+
+@media (min-width: 1024px) {
+
+  .column-card {
+    min-width: 18rem;
+    max-width: 24rem;
+  }
+
+  .modal-overlay {
+    align-items: center
+  }
 }
