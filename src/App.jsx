@@ -7,7 +7,7 @@ import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
 
-  const [column, setColumn] = useState([]);
+  const [column, setColumn] = useState(JSON.parse(localStorage.getItem('column')) || []);
   const [options, setOptions] = useState({ id: 0, flag: true });
   const [modal, setModal] = useState({ isOpen: false, value: {} });
 
@@ -28,6 +28,7 @@ function App() {
       tasks: [{ id: Date.now().toString() + 1, colId: Date.now().toString(), title: 'Nuovo Task', desc: 'Descrizione del Task' }] // Unique ID for task
     };
     setColumn(prev => [...prev, newColumn]);
+    localStorage.setItem('column', JSON.stringify([...column, newColumn]))
   };
 
   useEffect(() => {
@@ -41,6 +42,13 @@ function App() {
       }
       return c;
     }));
+
+    localStorage.setItem('column', JSON.stringify(column.map(c => {
+      if (c.id === col.id) {
+        return { ...c, tasks: [{ colId: c.id, id: Date.now().toString(), title: 'Nuovo Task', desc: 'Descrizione del Task' }, ...c.tasks] };
+      }
+      return c;
+    })))
   };
 
   const handleConfirm = () => {
@@ -51,6 +59,14 @@ function App() {
         }
         return col;
       }));
+
+      localStorage.setItem('column', JSON.stringify(column.map(col => {
+        if (col.id === modal.value.id) {
+          return { ...col, name: modal.value.name };
+        }
+        return col;
+      })))
+
     }
     if (modal.value.desc) {
       setColumn(prev => prev.map(col => {
@@ -64,10 +80,23 @@ function App() {
               return task;
             })
           }
-
         }
         return col;
       }));
+      localStorage.setItem('column', JSON.stringify(column.map(col => {
+        if (col.id === modal.value.colId) {
+          return {
+            ...col, tasks: col.tasks.map(task => {
+              if (task.id === modal.value.id) {
+
+                return { ...task, title: modal.value.name, desc: modal.value.desc }
+              }
+              return task;
+            })
+          }
+        }
+        return col;
+      })))
     }
 
     setModal(prev => ({ isOpen: false, value: prev.value }));
@@ -98,6 +127,7 @@ function App() {
 
   const handleDeleteColumn = columnToDelete => {
     setColumn(prev => prev.filter(col => col.id !== columnToDelete.id))
+    localStorage.setItem('column', JSON.stringify(column.filter((col) => col.id !== columnToDelete.id)))
   }
 
   const handleDeleteTask = taskToDelete => {
@@ -114,6 +144,20 @@ function App() {
       }
       return col;
     }));
+    localStorage.setItem('column', JSON.stringify(
+      column.map(col => {
+        if (col.id === taskToDelete.colId) {
+          return {
+            ...col, tasks: col.tasks.filter(task => {
+              if (task.id !== taskToDelete.id) {
+                return task;
+              }
+              return;
+            })
+          }
+        }
+        return col;
+      })));
   }
 
   // Funzione per gestire il drag & drop con la libreria
