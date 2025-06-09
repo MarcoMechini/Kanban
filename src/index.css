@@ -180,12 +180,19 @@ nav {
   margin-top: 0.25rem;
 }
 
+.tasks-row,
+.col-header {
+  position: relative;
+}
+
 .options {
+  position: absolute;
+  right: 10px;
+  top: 12px;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
 }
 
 .icon-btn {
@@ -193,9 +200,9 @@ nav {
   justify-content: center;
   align-items: center;
   border: 1px solid lightgray;
-  border-radius: 16px;
-  width: 24px;
-  height: 24px;
+  border-radius: 100px;
+  width: 42px;
+  height: 42px;
   cursor: pointer;
 }
 

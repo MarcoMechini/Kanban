@@ -37,7 +37,7 @@ function App() {
   const addTask = (_, col) => {
     setColumn(prev => prev.map(c => {
       if (c.id === col.id) {
-        return { ...c, tasks: [...c.tasks, { colId: c.id, id: Date.now().toString(), title: 'Nuovo Task', desc: 'Descrizione del Task' }] };
+        return { ...c, tasks: [{ colId: c.id, id: Date.now().toString(), title: 'Nuovo Task', desc: 'Descrizione del Task' }, ...c.tasks] };
       }
       return c;
     }));
