@@ -6,6 +6,11 @@
   box-sizing: border-box
 }
 
+.break-word {
+  word-break: break-word;
+  /* Forza le parole lunghe a spezzarsi e andare a capo */
+}
+
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
@@ -172,6 +177,7 @@ nav {
   font-size: 1.125rem;
   font-weight: 600;
   color: #1f2937;
+
 }
 
 .tasks-row p {

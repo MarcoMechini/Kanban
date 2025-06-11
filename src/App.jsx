@@ -235,7 +235,7 @@ function App() {
                         tabIndex={0}
                         ref={(column[column.length - 1] === col) ? lastColumnRef : null}
                         {...provided.dragHandleProps}>
-                        <h3>{col.name}</h3>
+                        <h3 className='break-word'>{col.name}</h3>
                         <button
                           style={{ 'display': (options.id === col.id && options.flag === true) ? 'none' : '' }}
                           className="edit-name-button"
@@ -283,8 +283,8 @@ function App() {
                                     {...provided.dragHandleProps}
                                   >
                                     <div className='task-value'>
-                                      <h4>{task.title}</h4>
-                                      <p>{task.desc}</p>
+                                      <h4 className='break-word'>{task.title}</h4>
+                                      <p className='break-word'>{task.desc}</p>
                                     </div>
                                     <div className='task-settings'>
                                       <button
