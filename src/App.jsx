@@ -33,7 +33,7 @@ function App() {
 
   useEffect(() => {
     if (lastColumnRef.current) lastColumnRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, [column]);
+  }, [column.length]);
 
   const addTask = (_, col) => {
     setColumn(prev => prev.map(c => {
